@@ -5,16 +5,27 @@ document.addEventListener("DOMContentLoaded", function () {
   const ctx = document.getElementById("grafico-estoque")?.getContext("2d");
   let graficoEstoque = null;
 
+  // codigo original ____________________________________________________
+  // async function carregarEstoqueDoBackend() {
+  //   try {
+  //     const res = await fetch(`${API_URL}/estoque`);
+  //     if (!res.ok) throw new Error("Erro ao buscar estoque");
+  //     return await res.json();
+  //   } catch (err) {
+  //     console.error(err);
+  //     tabelaBody.innerHTML = `<tr><td colspan="2" style="text-align:center;">Erro ao carregar estoque.</td></tr>`;
+  //     return [];
+  //   }
+  // }
+
   async function carregarEstoqueDoBackend() {
-    try {
-      const res = await fetch(`${API_URL}/estoque`);
-      if (!res.ok) throw new Error("Erro ao buscar estoque");
-      return await res.json();
-    } catch (err) {
-      console.error(err);
-      tabelaBody.innerHTML = `<tr><td colspan="2" style="text-align:center;">Erro ao carregar estoque.</td></tr>`;
-      return [];
-    }
+    // === DADOS FICTÍCIOS TEMPORÁRIOS ===
+    return [
+      { nome: "Dipirona", quantidade: 50 },
+      { nome: "Paracetamol", quantidade: 30 },
+      { nome: "Ibuprofeno", quantidade: 45 },
+      { nome: "Amoxicilina", quantidade: 15 },
+    ];
   }
 
   async function renderizarTudo() {
@@ -75,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
   form.addEventListener("submit", async function (event) {
     event.preventDefault();
     const nomeMedicamentoInput = document.getElementById(
-      "nome-medicamento-estoque"
+      "nome-medicamento-estoque",
     );
     const quantidadeInput = document.getElementById("quantidade-add-estoque");
 

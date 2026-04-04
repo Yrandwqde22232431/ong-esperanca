@@ -6,7 +6,7 @@
   if (!caminhoPagina.includes("/login/")) {
     if (!usuarioJSON || !loginTimestamp) {
       console.log("AuthGuard: Nenhum login local. Redirecionando...");
-      window.location.href = "login/index.html";
+      // window.location.href = "login/index.html";
       return;
     }
 

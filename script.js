@@ -62,21 +62,26 @@ function atualizarSaudacao() {
 
 // Nivel de acesso _________________________________________________________________________________
 function aplicarControleDeAcesso() {
-  const usuarioJSON = localStorage.getItem("usuarioLogado");
-  if (!usuarioJSON) return;
+  // === MODO FORÇA BRUTA ATIVADO ===
+  // Removemos a verificação de login para garantir que a classe seja aplicada de qualquer jeito.
+  console.log("Nível de Acesso FORÇADO ABSOLUTO: Gerente.");
+  document.body.classList.add("role-gerente");
 
-  try {
-    const usuario = JSON.parse(usuarioJSON);
-
-    if (usuario && usuario.nivel_acesso === "gerente") {
-      console.log("Nível de Acesso: Gerente. Aplicando permissões totais.");
-      document.body.classList.add("role-gerente");
-    } else {
-      console.log("Nível de Acesso: Funcionário. Aplicando limitações.");
-    }
-  } catch (e) {
-    console.error("Erro ao ler dados de acesso do usuário:", e);
-  }
+  /*   === CÓDIGO ORIGINAL DESATIVADO ===
+  const usuarioJSON = localStorage.getItem("usuarioLogado");
+  if (!usuarioJSON) return;
+  try {
+    const usuario = JSON.parse(usuarioJSON);
+    if (usuario && usuario.nivel_acesso === "gerente") {
+      console.log("Nível de Acesso: Gerente. Aplicando permissões totais.");
+      document.body.classList.add("role-gerente");
+    } else {
+      console.log("Nível de Acesso: Funcionário. Aplicando limitações.");
+    }
+  } catch (e) {
+    console.error("Erro ao ler dados de acesso do usuário:", e);
+  }
+  */
 }
 
 // barra de pesquisa universal _______________________________________________________________________________________
@@ -84,7 +89,7 @@ function configurarBusca(
   inputId,
   listaContainerId,
   itemSelector,
-  displayStyle = ""
+  displayStyle = "",
 ) {
   const inputBusca = document.getElementById(inputId);
   const listaContainer = document.getElementById(listaContainerId);
@@ -174,13 +179,13 @@ async function iniciarPaginaDashboard() {
 
   const contadorResidentesEl = document.getElementById("contador-residentes");
   const contadorRelatoriosEl = document.getElementById(
-    "contador-relatorios-hoje"
+    "contador-relatorios-hoje",
   );
   const contadorAtividadesEl = document.getElementById(
-    "contador-atividades-hoje"
+    "contador-atividades-hoje",
   );
   const listaResidentesDashboard = document.getElementById(
-    "residentes-chart-list"
+    "residentes-chart-list",
   );
   const graficoContainer = document.querySelector(".grafico-dashboard");
 
@@ -194,12 +199,15 @@ async function iniciarPaginaDashboard() {
   const dd = String(dataAtual.getDate()).padStart(2, "0");
   const hoje = `${yyyy}-${mm}-${dd}`;
 
-  try {
-    const resResidentes = await fetch(`${API_URL}/residentes`);
-    if (resResidentes.ok) listaResidentes = await resResidentes.json();
-  } catch (e) {
-    console.error("Dashboard: Erro ao carregar residentes", e);
-  }
+  // codigo original ___________________________________________________________
+  // try {
+  //   const resResidentes = await fetch(`${API_URL}/residentes`);
+  //   if (resResidentes.ok) listaResidentes = await resResidentes.json();
+  // } catch (e) {
+  //   console.error("Dashboard: Erro ao carregar residentes", e);
+  // }
+
+  listaResidentes = [...residentesFicticios];
 
   try {
     const resRelatorios = await fetch(`${API_URL}/relatorios`);
@@ -237,9 +245,33 @@ async function iniciarPaginaDashboard() {
     contadorAtividadesEl.textContent = deHoje;
   }
 
+  // codigo original _____________________________________________________
+  // if (listaResidentesDashboard) {
+  //   listaResidentesDashboard.innerHTML = "";
+  //   listaResidentes.forEach((residente) => {
+  //     const li = document.createElement("li");
+  //     li.textContent = `${residente.primeiro_nome} ${residente.sobrenome}`;
+  //     li.dataset.id = residente.id_residente;
+  //     listaResidentesDashboard.appendChild(li);
+  //   });
+  // }
+
   if (listaResidentesDashboard) {
     listaResidentesDashboard.innerHTML = "";
-    listaResidentes.forEach((residente) => {
+
+    // Forçando a lista de nomes a existir exatamente aqui
+    const nomesGarantidos = [
+      { id_residente: 1, primeiro_nome: "Ana", sobrenome: "Silva" },
+      { id_residente: 2, primeiro_nome: "Carlos", sobrenome: "Oliveira" },
+      { id_residente: 3, primeiro_nome: "Maria", sobrenome: "Souza" },
+      { id_residente: 4, primeiro_nome: "João", sobrenome: "Pereira" },
+      { id_residente: 5, primeiro_nome: "Teresa", sobrenome: "Lima" },
+      { id_residente: 6, primeiro_nome: "Antônio", sobrenome: "Gomes" },
+      { id_residente: 7, primeiro_nome: "Margarida", sobrenome: "Santos" },
+      { id_residente: 8, primeiro_nome: "Francisco", sobrenome: "Alves" },
+    ];
+
+    nomesGarantidos.forEach((residente) => {
       const li = document.createElement("li");
       li.textContent = `${residente.primeiro_nome} ${residente.sobrenome}`;
       li.dataset.id = residente.id_residente;
@@ -278,12 +310,12 @@ async function iniciarPaginaDashboard() {
 
         try {
           const resGrafico = await fetch(
-            `${API_URL}/relatorios/residente/${residenteId}`
+            `${API_URL}/relatorios/residente/${residenteId}`,
           );
           if (resGrafico.ok) {
             const relatoriosDoResidente = await resGrafico.json();
             const dadosProcessados = processarDadosGrafico(
-              relatoriosDoResidente
+              relatoriosDoResidente,
             );
             dadosRegrediu = dadosProcessados.dadosRegrediu;
             dadosEstagnado = dadosProcessados.dadosEstagnado;
@@ -400,21 +432,81 @@ async function iniciarPaginaResidentes() {
     '<li style="display: block; text-align: center; background: none; color: var(--secondary-color);">Carregando...</li>';
 
   try {
-    const response = await fetch(`${API_URL}/residentes`, {
-      credentials: "include",
-    });
+    // codigo original ______________________________________________________________
+    // const response = await fetch(`${API_URL}/residentes`, {
+    //   credentials: "include",
+    // });
 
-    if (response.status === 401) {
-      console.error("Sessão expirada. Redirecionando para login.");
-      alert("Sua sessão expirou. Por favor, faça login novamente.");
-      localStorage.clear();
-      window.location.href = "login/index.html";
-      return;
-    }
+    // if (response.status === 401) {
+    //   console.error("Sessão expirada. Redirecionando para login.");
+    //   alert("Sua sessão expirou. Por favor, faça login novamente.");
+    //   localStorage.clear();
+    //   window.location.href = "login/index.html";
+    //   return;
+    // }
 
-    if (!response.ok) throw new Error("Erro ao buscar residentes");
+    // if (!response.ok) throw new Error("Erro ao buscar residentes");
 
-    let listaResidentes = await response.json();
+    // let listaResidentes = await response.json();
+
+    let listaResidentes = [
+      {
+        id_residente: 1,
+        primeiro_nome: "Ana",
+        sobrenome: "Silva",
+        data_nascimento: "1945-03-10",
+        sexo: "feminino",
+      },
+      {
+        id_residente: 2,
+        primeiro_nome: "Carlos",
+        sobrenome: "Oliveira",
+        data_nascimento: "1938-11-20",
+        sexo: "masculino",
+      },
+      {
+        id_residente: 3,
+        primeiro_nome: "Maria",
+        sobrenome: "Souza",
+        data_nascimento: "1950-07-01",
+        sexo: "feminino",
+      },
+      {
+        id_residente: 4,
+        primeiro_nome: "João",
+        sobrenome: "Pereira",
+        data_nascimento: "1942-01-15",
+        sexo: "masculino",
+      },
+      {
+        id_residente: 5,
+        primeiro_nome: "Teresa",
+        sobrenome: "Lima",
+        data_nascimento: "1935-05-30",
+        sexo: "feminino",
+      },
+      {
+        id_residente: 6,
+        primeiro_nome: "Antônio",
+        sobrenome: "Gomes",
+        data_nascimento: "1948-09-05",
+        sexo: "masculino",
+      },
+      {
+        id_residente: 7,
+        primeiro_nome: "Margarida",
+        sobrenome: "Santos",
+        data_nascimento: "1940-02-12",
+        sexo: "feminino",
+      },
+      {
+        id_residente: 8,
+        primeiro_nome: "Francisco",
+        sobrenome: "Alves",
+        data_nascimento: "1939-12-25",
+        sexo: "masculino",
+      },
+    ];
     listaResidentes.reverse();
 
     tabelaBodyDesktop.innerHTML = "";
@@ -474,7 +566,7 @@ async function iniciarPaginaResidentes() {
 
         if (
           confirm(
-            `Tem certeza que deseja excluir o residente "${nomeDoResidente}"? Esta ação não pode ser desfeita.`
+            `Tem certeza que deseja excluir o residente "${nomeDoResidente}"? Esta ação não pode ser desfeita.`,
           )
         ) {
           try {
@@ -483,7 +575,7 @@ async function iniciarPaginaResidentes() {
               {
                 method: "DELETE",
                 credentials: "include",
-              }
+              },
             );
 
             if (deleteResponse.status === 401) {
@@ -525,7 +617,7 @@ async function iniciarPaginaResidentes() {
 async function iniciarPaginaFuncionarios() {
   const tabelaBodyDesktop = document.getElementById("lista-funcionarios-body");
   const listaBodyMobile = document.getElementById(
-    "lista-funcionarios-nova-body"
+    "lista-funcionarios-nova-body",
   );
 
   if (!tabelaBodyDesktop || !listaBodyMobile) {
@@ -539,12 +631,81 @@ async function iniciarPaginaFuncionarios() {
   listaBodyMobile.innerHTML =
     '<li style="display: block; text-align: center; background: none; color: var(--secondary-color);">Carregando...</li>';
 
+  // codigo original __________________________________________________________________
   try {
-    const response = await fetch(`${API_URL}/funcionarios`);
-    if (!response.ok) {
-      throw new Error("Erro ao buscar funcionários do servidor");
-    }
-    const listaFuncionarios = await response.json();
+    // codigo original _________________________________________________________
+    // const response = await fetch(`${API_URL}/funcionarios`);
+    // if (!response.ok) {
+    //   throw new Error("Erro ao buscar funcionários do servidor");
+    // }
+    // const listaFuncionarios = await response.json();
+
+    const listaFuncionarios = [
+      {
+        id_funcionario: 101,
+        numero_registro: "A101",
+        primeiro_nome: "Marcos",
+        sobrenome: "Oliveira",
+        turno: "manha",
+        status: "ativo",
+      },
+      {
+        id_funcionario: 102,
+        numero_registro: "A102",
+        primeiro_nome: "Lúcia",
+        sobrenome: "Pereira",
+        turno: "tarde",
+        status: "ativo",
+      },
+      {
+        id_funcionario: 103,
+        numero_registro: "A103",
+        primeiro_nome: "Ricardo",
+        sobrenome: "Abreu",
+        turno: "noite",
+        status: "ativo",
+      },
+      {
+        id_funcionario: 104,
+        numero_registro: "B101",
+        primeiro_nome: "Sofia",
+        sobrenome: "Martins",
+        turno: "manha",
+        status: "inativo",
+      },
+      {
+        id_funcionario: 105,
+        numero_registro: "B102",
+        primeiro_nome: "Tiago",
+        sobrenome: "Cardoso",
+        turno: "tarde",
+        status: "ativo",
+      },
+      {
+        id_funcionario: 106,
+        numero_registro: "B103",
+        primeiro_nome: "Vanessa",
+        sobrenome: "Rocha",
+        turno: "noite",
+        status: "ativo",
+      },
+      {
+        id_funcionario: 107,
+        numero_registro: "C101",
+        primeiro_nome: "André",
+        sobrenome: "Barbosa",
+        turno: "manha",
+        status: "ativo",
+      },
+      {
+        id_funcionario: 108,
+        numero_registro: "C102",
+        primeiro_nome: "Beatriz",
+        sobrenome: "Freitas",
+        turno: "tarde",
+        status: "ativo",
+      },
+    ];
     listaFuncionarios.reverse();
 
     // 2. LIMPAR A TABELA ______________________________________________________________________________
@@ -631,13 +792,13 @@ async function iniciarPaginaFuncionarios() {
 
         if (
           confirm(
-            `Tem certeza que deseja excluir o funcionário "${nomeDoFuncionario}"?`
+            `Tem certeza que deseja excluir o funcionário "${nomeDoFuncionario}"?`,
           )
         ) {
           try {
             const deleteResponse = await fetch(
               `${API_URL}/funcionarios/${idParaExcluir}`,
-              { method: "DELETE" }
+              { method: "DELETE" },
             );
 
             if (deleteResponse.ok) {
@@ -672,15 +833,15 @@ async function iniciarPaginaFuncionarios() {
 
 function iniciarPaginaResponsaveis() {
   const listaResponsaveis = JSON.parse(
-    sessionStorage.getItem("listaResponsaveis") || "[]"
+    sessionStorage.getItem("listaResponsaveis") || "[]",
   );
   const listaResidentes = JSON.parse(
-    sessionStorage.getItem("listaResidentes") || "[]"
+    sessionStorage.getItem("listaResidentes") || "[]",
   );
 
   const tabelaBodyDesktop = document.getElementById("lista-responsaveis-body");
   const listaBodyMobile = document.getElementById(
-    "lista-responsaveis-nova-body"
+    "lista-responsaveis-nova-body",
   );
 
   if (!tabelaBodyDesktop || !listaBodyMobile) return;
@@ -696,7 +857,7 @@ function iniciarPaginaResponsaveis() {
       const parentesco = responsavel.parentesco;
 
       const residenteVinculado = listaResidentes.find(
-        (r) => r.id == responsavel.residenteId
+        (r) => r.id == responsavel.residenteId,
       );
       const nomeResidente = residenteVinculado
         ? `${residenteVinculado["primeiro-nome"]} ${residenteVinculado.sobrenome}`
@@ -742,16 +903,16 @@ function iniciarPaginaResponsaveis() {
 
     const itemPai = botaoExcluir.closest("tr") || botaoExcluir.closest("li");
     const nomeDoResponsavel = itemPai.querySelector(
-      "td:first-child, .responsavel-nome"
+      "td:first-child, .responsavel-nome",
     ).textContent;
 
     if (
       confirm(
-        `Tem certeza que deseja excluir o responsável "${nomeDoResponsavel}"?`
+        `Tem certeza que deseja excluir o responsável "${nomeDoResponsavel}"?`,
       )
     ) {
       const novaLista = JSON.parse(
-        sessionStorage.getItem("listaResponsaveis") || "[]"
+        sessionStorage.getItem("listaResponsaveis") || "[]",
       ).filter((resp) => resp.id != idParaExcluir);
 
       sessionStorage.setItem("listaResponsaveis", JSON.stringify(novaLista));
@@ -773,7 +934,7 @@ function iniciarPaginaResponsaveis() {
 async function iniciarPaginaMedicamentos() {
   const tabelaBodyDesktop = document.getElementById("lista-medicamentos-body");
   const listaBodyMobile = document.getElementById(
-    "lista-medicamentos-nova-body"
+    "lista-medicamentos-nova-body",
   );
 
   if (!tabelaBodyDesktop || !listaBodyMobile) return;
@@ -784,10 +945,79 @@ async function iniciarPaginaMedicamentos() {
   listaBodyMobile.innerHTML = "";
 
   try {
-    const response = await fetch(`${API_URL}/medicamentos`);
-    if (!response.ok)
-      throw new Error("Erro ao buscar medicamentos do servidor");
-    const listaTratamentos = await response.json();
+    // codigo original _______________________________________________________________
+    // const response = await fetch(`${API_URL}/medicamentos`);
+    // if (!response.ok)
+    //   throw new Error("Erro ao buscar medicamentos do servidor");
+    // const listaTratamentos = await response.json();
+
+    const listaTratamentos = [
+      {
+        id: 1,
+        horario: "08:00",
+        residenteNome: "Ana Silva",
+        medicamento: "Paracetamol",
+        dosagem: "1 comp.",
+        tipo: "Comprimido",
+      },
+      {
+        id: 2,
+        horario: "08:00",
+        residenteNome: "Carlos Oliveira",
+        medicamento: "Dipirona",
+        dosagem: "20 gotas",
+        tipo: "Gotas",
+      },
+      {
+        id: 3,
+        horario: "09:00",
+        residenteNome: "Maria Souza",
+        medicamento: "Amoxicilina",
+        dosagem: "5ml",
+        tipo: "Líquido",
+      },
+      {
+        id: 4,
+        horario: "10:00",
+        residenteNome: "João Pereira",
+        medicamento: "Ibuprofeno",
+        dosagem: "1 comp.",
+        tipo: "Comprimido",
+      },
+      {
+        id: 5,
+        horario: "12:00",
+        residenteNome: "Teresa Lima",
+        medicamento: "Loratadina",
+        dosagem: "1 comp.",
+        tipo: "Comprimido",
+      },
+      {
+        id: 6,
+        horario: "14:00",
+        residenteNome: "Antônio Gomes",
+        medicamento: "Losartana",
+        dosagem: "1 comp.",
+        tipo: "Comprimido",
+      },
+      {
+        id: 7,
+        horario: "16:00",
+        residenteNome: "Margarida Santos",
+        medicamento: "Sinvastatina",
+        dosagem: "1 comp.",
+        tipo: "Comprimido",
+      },
+      {
+        id: 8,
+        horario: "18:00",
+        residenteNome: "Francisco Alves",
+        medicamento: "Omeprazol",
+        dosagem: "1 comp.",
+        tipo: "Comprimido",
+      },
+    ];
+
     listaTratamentos.reverse();
 
     if (listaTratamentos.length > 0) {
@@ -849,7 +1079,7 @@ async function iniciarPaginaMedicamentos() {
           try {
             const deleteResponse = await fetch(
               `${API_URL}/medicamentos/${idParaExcluir}`,
-              { method: "DELETE" }
+              { method: "DELETE" },
             );
 
             if (deleteResponse.ok) {
@@ -886,15 +1116,91 @@ async function iniciarPaginaMedicamentos() {
 // (A função carregarAtividades NÃO precisa estar aqui, ela está no script de cadastro)
 
 async function iniciarPaginaAtividades() {
-  let listaAgendamentos = [];
-  try {
-    const res = await fetch(`${API_URL}/atividades`);
-    if (!res.ok) throw new Error("Erro ao listar atividades");
-    listaAgendamentos = await res.json();
-    listaAgendamentos.reverse();
-  } catch (err) {
-    console.error("Erro ao listar atividades:", err);
-  }
+  // codigo original ____________________________________________________________
+  // let listaAgendamentos = [];
+  // try {
+  //   const res = await fetch(`${API_URL}/atividades`);
+  //   if (!res.ok) throw new Error("Erro ao listar atividades");
+  //   listaAgendamentos = await res.json();
+  //   listaAgendamentos.reverse();
+  // } catch (err) {
+  //   console.error("Erro ao listar atividades:", err);
+  // }
+
+  let listaAgendamentos = [
+    {
+      id: 1,
+      data: "2025-11-16T10:00:00Z",
+      horario: "10:00:00",
+      nome_atividade: "Pintura em Tela",
+      duracao: "1 hora",
+      status: "Agendada",
+      participantes_nomes: "Ana Silva, Carlos Oliveira",
+    },
+    {
+      id: 2,
+      data: "2025-11-16T15:00:00Z",
+      horario: "15:00:00",
+      nome_atividade: "Fisioterapia em Grupo",
+      duracao: "45 minutos",
+      status: "Agendada",
+      participantes_nomes: "Maria Souza, João Pereira",
+    },
+    {
+      id: 3,
+      data: "2025-11-17T09:00:00Z",
+      horario: "09:00:00",
+      nome_atividade: "Aula de Música",
+      duracao: "1 hora",
+      status: "Agendada",
+      participantes_nomes: "Teresa Lima, Antônio Gomes",
+    },
+    {
+      id: 4,
+      data: "2025-11-17T14:00:00Z",
+      horario: "14:00:00",
+      nome_atividade: "Leitura Coletiva",
+      duracao: "1 hora",
+      status: "Concluída",
+      participantes_nomes: "Margarida Santos, Francisco Alves",
+    },
+    {
+      id: 5,
+      data: "2025-11-18T10:00:00Z",
+      horario: "10:00:00",
+      nome_atividade: "Jardinagem",
+      duracao: "1 hora",
+      status: "Agendada",
+      participantes_nomes: "Ana Silva, Maria Souza",
+    },
+    {
+      id: 6,
+      data: "2025-11-18T16:00:00Z",
+      horario: "16:00:00",
+      nome_atividade: "Sessão de Cinema",
+      duracao: "2 horas",
+      status: "Agendada",
+      participantes_nomes: "Carlos Oliveira, João Pereira, Antônio Gomes",
+    },
+    {
+      id: 7,
+      data: "2025-11-19T11:00:00Z",
+      horario: "11:00:00",
+      nome_atividade: "Alongamento",
+      duracao: "30 minutos",
+      status: "Cancelada",
+      participantes_nomes: "Teresa Lima, Margarida Santos",
+    },
+    {
+      id: 8,
+      data: "2025-11-19T15:00:00Z",
+      horario: "15:00:00",
+      nome_atividade: "Oficina de Culinária",
+      duracao: "1 hora",
+      status: "Agendada",
+      participantes_nomes: "Francisco Alves, Ana Silva",
+    },
+  ];
 
   const tabelaBodyDesktop = document.getElementById("lista-atividades-body");
   const listaBodyMobile = document.getElementById("lista-atividades-nova-body");
@@ -1066,10 +1372,78 @@ async function iniciarPaginaRelatorios() {
     '<li style="display: block; text-align: center; background: none; color: var(--secondary-color);">Carregando...</li>';
 
   try {
-    const response = await fetch(`${API_URL}/relatorios`);
-    if (!response.ok) throw new Error("Erro ao buscar relatórios");
+    // codigo original ______________________________________________________________
+    // const response = await fetch(`${API_URL}/relatorios`);
+    // if (!response.ok) throw new Error("Erro ao buscar relatórios");
 
-    const relatoriosOrdenados = await response.json();
+    // const relatoriosOrdenados = await response.json();
+
+    const relatoriosOrdenados = [
+      {
+        id: 1,
+        data: "2025-11-16",
+        residenteNome: "Ana Silva",
+        medicamento: "Paracetamol",
+        responsavelNome: "Marcos Oliveira",
+        statusMedicacao: "Medicado",
+      },
+      {
+        id: 2,
+        data: "2025-11-16",
+        residenteNome: "Carlos Oliveira",
+        medicamento: "Dipirona",
+        responsavelNome: "Lúcia Pereira",
+        statusMedicacao: "Medicado",
+      },
+      {
+        id: 3,
+        data: "2025-11-15",
+        residenteNome: "Maria Souza",
+        medicamento: "Amoxicilina",
+        responsavelNome: "Ricardo Abreu",
+        statusMedicacao: "Não Tomado",
+      },
+      {
+        id: 4,
+        data: "2025-11-15",
+        residenteNome: "João Pereira",
+        medicamento: "Ibuprofeno",
+        responsavelNome: "Sofia Martins",
+        statusMedicacao: "Medicado",
+      },
+      {
+        id: 5,
+        data: "2025-11-14",
+        residenteNome: "Teresa Lima",
+        medicamento: "Loratadina",
+        responsavelNome: "Tiago Cardoso",
+        statusMedicacao: "Medicado",
+      },
+      {
+        id: 6,
+        data: "2025-11-14",
+        residenteNome: "Antônio Gomes",
+        medicamento: "Losartana",
+        responsavelNome: "Vanessa Rocha",
+        statusMedicacao: "N/A",
+      },
+      {
+        id: 7,
+        data: "2025-11-13",
+        residenteNome: "Margarida Santos",
+        medicamento: "Sinvastatina",
+        responsavelNome: "André Barbosa",
+        statusMedicacao: "Medicado",
+      },
+      {
+        id: 8,
+        data: "2025-11-13",
+        residenteNome: "Francisco Alves",
+        medicamento: "Omeprazol",
+        responsavelNome: "Beatriz Freitas",
+        statusMedicacao: "Medicado",
+      },
+    ];
 
     tabelaBodyDesktop.innerHTML = "";
     listaBodyMobile.innerHTML = "";
@@ -1140,7 +1514,7 @@ async function iniciarPaginaRelatorios() {
           try {
             const deleteResponse = await fetch(
               `${API_URL}/relatorios/${idParaExcluir}`,
-              { method: "DELETE" }
+              { method: "DELETE" },
             );
 
             if (deleteResponse.ok) {
@@ -1272,9 +1646,12 @@ function carregarInfoPerfilUsuario() {
     const corAvatar = getAvatarColor(nomeParaHash, sexoUsuario);
     avatarCircle.style.backgroundColor = corAvatar;
   } else {
-    spanInicial.textContent = "!";
+    spanInicial.textContent = "V";
     pNomeCompleto.textContent = "Visitante";
-    console.error("Usuário não encontrado na sessão.");
+    avatarCircle.style.backgroundColor = getAvatarColor(
+      "Visitante",
+      "masculino",
+    );
   }
 }
 
@@ -1319,7 +1696,7 @@ document.addEventListener("DOMContentLoaded", function () {
           () => {
             paginaAtual.classList.remove("ativa", "pagina-saindo");
           },
-          { once: true }
+          { once: true },
         );
       }
       paginaAlvo.classList.add("ativa", "pagina-entrando");
@@ -1329,7 +1706,7 @@ document.addEventListener("DOMContentLoaded", function () {
           paginaAlvo.classList.remove("pagina-entrando");
           isAnimating = false;
         },
-        { once: true }
+        { once: true },
       );
     });
   });
@@ -1342,10 +1719,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const flyoutBackdrop = document.querySelector(".flyout-backdrop");
     const flyoutClose = document.querySelector(".flyout-close");
     const flyoutLinksContainer = document.getElementById(
-      "flyout-links-container"
+      "flyout-links-container",
     );
     const todosOsLinksDoMenu = document.querySelectorAll(
-      ".header2 .menu-header > ul > li"
+      ".header2 .menu-header > ul > li",
     );
 
     const fecharFlyout = () => {
@@ -1382,7 +1759,7 @@ document.addEventListener("DOMContentLoaded", function () {
             novoLink.addEventListener("click", (e) => {
               e.preventDefault();
               const itemOriginalDoMenu = document.querySelector(
-                `.menu-header li[data-pagina="${pagina}"]`
+                `.menu-header li[data-pagina="${pagina}"]`,
               );
               if (itemOriginalDoMenu) {
                 itemOriginalDoMenu.click();
@@ -1441,19 +1818,19 @@ document.addEventListener("DOMContentLoaded", function () {
     "busca-residentes-mobile",
     "lista-residentes-nova-body",
     "li",
-    "grid"
+    "grid",
   );
 
   configurarBusca(
     "busca-funcionarios-desktop",
     "lista-funcionarios-body",
-    "tr"
+    "tr",
   );
   configurarBusca(
     "busca-funcionarios-mobile",
     "lista-funcionarios-nova-body",
     "li",
-    "grid"
+    "grid",
   );
 
   // --- Buscas para a página de RELATÓRIOS ---
@@ -1462,7 +1839,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "busca-relatorios-mobile",
     "lista-relatorios-nova-body",
     "li",
-    "grid"
+    "grid",
   );
 
   // --- Buscas para a página de ATIVIDADES ---
@@ -1471,20 +1848,20 @@ document.addEventListener("DOMContentLoaded", function () {
     "busca-atividades-mobile",
     "lista-atividades-nova-body",
     "li",
-    "grid"
+    "grid",
   );
 
   // --- Buscas para a página de MEDICAMENTOS ---
   configurarBusca(
     "busca-medicamentos-desktop",
     "lista-medicamentos-body",
-    "tr"
+    "tr",
   );
   configurarBusca(
     "busca-medicamentos-mobile",
     "lista-medicamentos-nova-body",
     "li",
-    "grid"
+    "grid",
   );
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -1494,7 +1871,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (paginaDestino) {
     itemInicial = document.querySelector(
-      `.menu-header li[data-pagina="${paginaDestino}"]`
+      `.menu-header li[data-pagina="${paginaDestino}"]`,
     );
   }
 
