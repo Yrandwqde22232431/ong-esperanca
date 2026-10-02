@@ -1,102 +1,124 @@
 <!doctype html>
 <html lang="pt-BR">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="A ONG Esperança acolhe crianças, adolescentes e famílias e promove educação, alimentação e desenvolvimento comunitário."
+      content="A ONG Esperança transforma vidas por meio da solidariedade, inclusão e apoio à comunidade."
     />
-    <title>ONG Esperança | Acolhimento e transformação social</title>
-    <link rel="stylesheet" href="site.css" />
+    <title>ONG Esperança</title>
+    <link rel="stylesheet" href="landing.css" />
   </head>
   <body>
-    <header class="site-header">
-      <a class="brand" href="index.html" aria-label="ONG Esperança — página inicial">
+    <header class="landing-header">
+      <div class="landing-brand">
         <span class="brand-mark" aria-hidden="true">OE</span>
-        <span>ONG Esperança</span>
-      </a>
-      <nav class="site-nav" aria-label="Navegação principal">
+        <div>
+          <h1>ONG Esperança</h1>
+          <p>Transformando vidas por meio da solidariedade e da inclusão.</p>
+        </div>
+      </div>
+      <nav class="landing-nav" aria-label="Navegação principal">
         <a href="index.html" aria-current="page">Início</a>
-        <a href="sobre.html">Sobre</a>
+        <a href="sobre.html">Sobre nós</a>
         <a href="projetos.html">Projetos</a>
         <a href="contato.html">Contato</a>
-        <a class="nav-cta" href="cadastro.html">Participe</a>
+        <a href="cadastro.html">Cadastro</a>
       </nav>
     </header>
 
-    <main>
-      <section class="hero home-hero" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <p class="eyebrow">Acolher, fortalecer, transformar</p>
-          <h1 id="hero-title">Transformando vidas com acolhimento, educação e esperança</h1>
-          <p class="hero-lead">
-            A ONG Esperança atua em defesa de crianças, adolescentes e famílias em situação
-            de vulnerabilidade, oferecendo cuidado, oportunidades e suporte para um futuro digno.
+    <main class="landing-main">
+      <section class="apresentacao" aria-labelledby="apresentacao-titulo">
+        <div>
+          <p class="eyebrow">Acolher, incluir, transformar</p>
+          <h2 id="apresentacao-titulo">Quem Somos</h2>
+          <p>
+            A ONG Esperança atua no apoio a pessoas em situação de vulnerabilidade social,
+            desenvolvendo projetos de inclusão, educação e assistência à comunidade.
           </p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="sobre.html">Conhecer nossa história</a>
-            <a class="button button-secondary" href="contato.html#contato">Fazer uma doação</a>
-          </div>
+          <a class="botao" href="sobre.html">Conheça nossa história</a>
         </div>
         <img
-          class="hero-image"
           src="imagens/ong-esperanca.jpg"
           alt="Voluntários da ONG Esperança realizando uma ação social"
-          width="900"
-          height="650"
+          width="1200"
+          height="800"
         />
       </section>
 
-      <section class="section-soft" aria-labelledby="destaques-title">
+      <section class="landing-section" aria-labelledby="missao-titulo">
         <div class="section-heading">
-          <p class="eyebrow">Nosso compromisso</p>
-          <h2 id="destaques-title">Cuidado que cria novas possibilidades</h2>
-          <p>
-            Mais do que atender necessidades imediatas, fortalecemos pessoas por meio de
-            programas de apoio social, educação e desenvolvimento comunitário.
-          </p>
+          <p class="eyebrow">Nosso propósito</p>
+          <h2 id="missao-titulo">Nossa Missão</h2>
         </div>
-        <div class="feature-grid">
-          <article class="feature-card">
-            <span class="feature-icon" aria-hidden="true">♡</span>
-            <h3>Acolhimento</h3>
-            <p>Escuta, cuidado e apoio humanizado para quem mais precisa.</p>
+        <article class="card missao-card">
+          <span class="badge">Projeto ativo</span>
+          <h3>Transformar através da solidariedade</h3>
+          <p>
+            Nosso objetivo é promover oportunidades e contribuir para uma sociedade mais
+            justa, solidária e inclusiva.
+          </p>
+        </article>
+      </section>
+
+      <section class="landing-section" aria-labelledby="ajuda-titulo">
+        <div class="section-heading">
+          <p class="eyebrow">Faça a diferença</p>
+          <h2 id="ajuda-titulo">Como Você Pode Ajudar</h2>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <span class="badge">Doação</span>
+            <h3>Faça uma contribuição</h3>
+            <p>
+              Sua contribuição ajuda a manter nossos projetos e ampliar o atendimento às
+              pessoas que precisam.
+            </p>
+            <a class="botao" href="contato.html">Saiba como contribuir</a>
           </article>
-          <article class="feature-card">
-            <span class="feature-icon" aria-hidden="true">✳</span>
-            <h3>Educação</h3>
-            <p>Aprendizagem e oportunidades para construir novos caminhos.</p>
-          </article>
-          <article class="feature-card">
-            <span class="feature-icon" aria-hidden="true">⌂</span>
-            <h3>Alimentação</h3>
-            <p>Segurança alimentar e suporte essencial para as famílias.</p>
-          </article>
-          <article class="feature-card">
-            <span class="feature-icon" aria-hidden="true">◎</span>
-            <h3>Comunidade</h3>
-            <p>Parcerias e ações que aproximam e fortalecem nossa região.</p>
+          <article class="card">
+            <span class="badge">Voluntariado</span>
+            <h3>Seja voluntário</h3>
+            <p>
+              Faça parte da nossa equipe oferecendo seu tempo e suas habilidades para
+              ajudar a comunidade.
+            </p>
+            <a class="botao" href="cadastro.html">Quero ser voluntário</a>
           </article>
         </div>
       </section>
 
-      <section class="callout" aria-labelledby="callout-title">
-        <div>
-          <p class="eyebrow">Esperança se faz em conjunto</p>
-          <h2 id="callout-title">Junte-se a nós e ajude a transformar realidades.</h2>
+      <section class="landing-section" aria-labelledby="informacoes-titulo">
+        <div class="section-heading">
+          <p class="eyebrow">Juntos fazemos mais</p>
+          <h2 id="informacoes-titulo">Informações</h2>
         </div>
-        <a class="button button-light" href="cadastro.html">Quero participar</a>
+        <div class="alerta sucesso" role="status">
+          <strong>Obrigado por apoiar a ONG Esperança!</strong>
+          <p>Sua participação ajuda a transformar vidas.</p>
+        </div>
+      </section>
+
+      <section class="landing-section contact-section" aria-labelledby="contato-titulo">
+        <div class="section-heading">
+          <p class="eyebrow">Estamos aqui para ouvir</p>
+          <h2 id="contato-titulo">Entre em Contato</h2>
+        </div>
+        <address class="contato">
+          <p><strong>Telefone:</strong> <a href="tel:+551733333333">(17) 3333-3333</a></p>
+          <p><strong>E-mail:</strong> <a href="mailto:contato@ongesperanca.org">contato@ongesperanca.org</a></p>
+          <p><strong>Endereço:</strong> Rua da Solidariedade, 100 - Centro</p>
+        </address>
       </section>
     </main>
 
+    <div class="toast" role="status">
+      Obrigado por apoiar a ONG Esperança!
+    </div>
+
     <footer class="site-footer">
-      <a class="brand brand-footer" href="index.html">
-        <span class="brand-mark" aria-hidden="true">OE</span>
-        <span>ONG Esperança</span>
-      </a>
-      <p>Com acolhimento, educação e esperança, construímos um futuro mais digno.</p>
-      <p class="copyright">© 2026 ONG Esperança. Todos os direitos reservados.</p>
+      <p>© 2026 ONG Esperança. Todos os direitos reservados.</p>
     </footer>
   </body>
 </html>

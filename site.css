@@ -569,6 +569,207 @@ h3 {
   accent-color: var(--green);
 }
 
+.landing-header {
+  padding: 2.25rem max(1.5rem, calc((100% - 1200px) / 2)) 1.5rem;
+  color: white;
+  background: var(--green-dark);
+}
+
+.landing-brand {
+  max-width: 1200px;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.landing-brand .brand-mark {
+  width: 58px;
+  height: 58px;
+  color: var(--green-dark);
+  background: white;
+  font-size: 1rem;
+}
+
+.landing-brand h1 {
+  margin-bottom: 0.2rem;
+  color: white;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  letter-spacing: -0.04em;
+}
+
+.landing-brand p {
+  margin-bottom: 0;
+  color: #d6e9de;
+}
+
+.landing-nav {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.75rem;
+}
+
+.landing-nav a {
+  padding: 0.45rem 0;
+  color: #eff8f2;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.landing-nav a:hover,
+.landing-nav a[aria-current="page"] {
+  color: #f8c68c;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+.landing-main {
+  padding: 0 0 1rem;
+}
+
+.apresentacao {
+  width: min(1200px, calc(100% - 3rem));
+  min-height: 460px;
+  margin: 0 auto;
+  padding: 4.5rem 0;
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  align-items: center;
+  gap: clamp(2rem, 6vw, 5rem);
+}
+
+.apresentacao h2 {
+  font-size: clamp(2.3rem, 4vw, 3.4rem);
+}
+
+.apresentacao p:not(.eyebrow) {
+  max-width: 580px;
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+.apresentacao img {
+  width: 100%;
+  max-height: 420px;
+  border-radius: 30px 30px 100px 30px;
+  background: var(--green-soft);
+  box-shadow: var(--shadow);
+  object-fit: cover;
+}
+
+.landing-section {
+  width: min(1200px, calc(100% - 3rem));
+  margin: 0 auto;
+  padding: 3.5rem 0;
+}
+
+.landing-section .section-heading {
+  margin-bottom: 2rem;
+}
+
+.landing-section .section-heading h2 {
+  margin-bottom: 0;
+}
+
+.missao-card {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.card {
+  padding: 2rem;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: white;
+  box-shadow: var(--shadow);
+}
+
+.card p {
+  color: var(--muted);
+}
+
+.card .botao {
+  margin-top: 0.6rem;
+}
+
+.badge {
+  margin-bottom: 1rem;
+  padding: 0.35rem 0.8rem;
+  display: inline-block;
+  border-radius: 999px;
+  color: var(--green-dark);
+  background: var(--green-soft);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.botao {
+  min-height: 46px;
+  padding: 0.7rem 1.15rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: white;
+  background: var(--green);
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+.botao:hover {
+  transform: translateY(-2px);
+  background: var(--green-dark);
+}
+
+.alerta {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 1.5rem 1.75rem;
+  border: 1px solid #b8d9c3;
+  border-radius: 14px;
+}
+
+.alerta p {
+  margin: 0.35rem 0 0;
+}
+
+.sucesso {
+  color: #1a563e;
+  background: #eaf6ed;
+}
+
+.contact-section {
+  padding-bottom: 5rem;
+}
+
+.contato {
+  padding: 1.5rem 2rem;
+  border-left: 4px solid var(--green);
+  border-radius: 0 14px 14px 0;
+  color: var(--muted);
+  background: #f4f7f1;
+  font-style: normal;
+}
+
+.contato p:last-child {
+  margin-bottom: 0;
+}
+
+.contato a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
 @media (max-width: 850px) {
   .site-header {
     padding: 1rem 0;
@@ -602,6 +803,16 @@ h3 {
   .contact-layout {
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+
+  .apresentacao {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    padding: 3rem 0;
+  }
+
+  .apresentacao img {
+    max-height: 380px;
   }
 }
 
@@ -693,6 +904,54 @@ h3 {
 
   .form-field-full {
     grid-column: auto;
+  }
+
+  .landing-header {
+    padding: 1.5rem 1rem 1rem;
+  }
+
+  .landing-brand {
+    align-items: flex-start;
+  }
+
+  .landing-brand .brand-mark {
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .landing-nav {
+    gap: 0.35rem 1rem;
+  }
+
+  .landing-nav a {
+    font-size: 0.9rem;
+  }
+
+  .apresentacao,
+  .landing-section {
+    width: min(100% - 2rem, 1200px);
+  }
+
+  .apresentacao img {
+    border-radius: 22px;
+  }
+
+  .landing-section {
+    padding: 2.5rem 0;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+
+  .contato {
+    padding: 1.3rem;
+    overflow-wrap: anywhere;
   }
 }
 
